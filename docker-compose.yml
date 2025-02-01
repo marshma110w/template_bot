@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # PostgreSQL
+  postgres:
+    image: postgres:13
+    env_file:
+      - env/dev/db.yml
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+
+  # S3
+  s3:
+    image: minio/minio
+    env_file:
+      - env/dev/s3.yml
+    ports:
+      - "9002:9000"
+    volumes:
+      - minio_dev_data:/data
+    command: server /data
+
+  # Bot
+  bot:
+    build: .
+    env_file:
+      - env/dev/app.yml
+    depends_on:
+      - postgres
+      - s3
+
+volumes:
+  postgres_dev_data:
+  minio_dev_data:

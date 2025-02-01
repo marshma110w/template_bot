@@ -4,6 +4,7 @@ import logging
 from telegram import Update
 from telegram.ext import filters, ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler
 from pathlib import Path
+from bot.handlers import upload_template_handler
 
 
 logging.basicConfig(
@@ -44,7 +45,8 @@ if __name__ == "__main__":
     unknown_command_handler = MessageHandler(filters.COMMAND, unknown)
 
     application.add_handler(start_handler)
-    application.add_handler(document_handler)
+    # application.add_handler(document_handler)
+    application.add_handler(upload_template_handler)
 
     application.add_handler(unknown_command_handler)
 
